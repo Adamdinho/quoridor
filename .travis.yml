@@ -1,0 +1,17 @@
+#########################################################################
+# travis configuration file .travis.yml
+# serves to configure our continuous integration environment (Travis CI)
+# Author: Adam Pickersgill adam.pickersgill@mail.mcgill.ca
+# Date: October 28th 2014
+#########################################################################
+
+language: c
+compiler:
+  - gcc
+  - clang
+# Change this to your needs
+#before_install:
+#install:
+#before_script:
+# TODO figure this out. script: ./configure && make
+#after_script:
