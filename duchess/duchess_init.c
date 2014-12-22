@@ -20,7 +20,7 @@ extern int player;
 * \return 0 on success -1 otherwise.
 **(((((((((((((((((((((((((((((())))))))))))))))))))))))))))))*/
 int init(int p_1or2,int* eval_weights) {
-  player = p_1or2;
+  //player = p_1or2;
 
 
   return 0;
