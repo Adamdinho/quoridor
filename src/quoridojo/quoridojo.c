@@ -7,8 +7,15 @@
 * Description: Currently a stub class to test integrity of the
 * build process.
 **************************************************************/
+#include "quoridojo.h"
 
+int x;
 
-int main() {
-  
+int main(int argc, char* argv) {
+    //if (argc == 1) {
+      //if (argv[0] == "-g") {
+        init(1, &x);
+        start_turn(argv);
+      //}
+    //}
 }

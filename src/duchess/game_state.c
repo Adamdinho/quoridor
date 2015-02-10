@@ -1,0 +1,122 @@
+/*************************************************************
+* \file game_state.c
+* ECSE 456 Design Project
+* Creation Date : 10/28/2014
+* Author: Adam Pickersgill  <adam.pickersgill@mail.mcgill.ca>
+*
+* Description: Holds the state of the current game board.
+**************************************************************/
+
+#include "game_state.h"
+
+
+
+int isValidMove(int currentPosition, int targetPosition) {
+    //Trying to move to one of the extra source nodes
+    if (targetPosition == 0 || targetPosition == (NUM_NODES + 1)) {
+        return 0;
+    }
+    struct AdjListNode* it = graph->array[currentPosition].head;
+    while (it) {
+        //If an edge exists from currentPos to targetPos, valid move
+        if (targetPosition == it->dest) {
+            return 1;
+        }
+        //Check all edges
+        it = it->next;
+    }
+    //No path to targetPosition possible. Invalid Move
+    return 0;
+}
+
+//Does not yet take into account that there always needs to be a path to goal
+//Also, does not handle intersecting walls
+int isValidWall(int square1, int square2) {
+    struct AdjListNode* it = graph->array[square1].head;
+    while (it) {
+        //If an edge exists from square1 to square2, it can be blocked
+        if (square2 == it->dest) {
+            return 1;
+        }
+        //Check all edges
+        it = it->next;
+    }
+    //No path to square2. Cannot place wall
+    return 0;
+}
+//Checks is wall placement is valid. If so wall is placed, else returns.
+//Code can be cleaner. Will modify later
+int placeWall(struct Graph* graph, int square1, int square2, int placement) {
+    //int dim = sqrt(NUM_NODES);
+    //Where the squares are relative to each other
+    int difference = square1 - square2;
+    //Horizontal Wall (placement can only be UP OR DOWN of the 2 squares)
+    if (difference == -1 || difference == 1) {
+        if (placement == WALL_UP) {
+            if (isValidWall(square1, square1 - dim) &&
+                isValidWall(square2, square2 - dim)) {
+                    placeWallPiece(graph, square1, square1 - dim);
+                    placeWallPiece(graph, square2, square2 - dim);
+                    return 1;
+            }
+        } else if (placement == WALL_DOWN) {
+            if (isValidWall(square1, square1 + dim) &&
+                isValidWall(square2, square2 + dim)) {
+                    placeWallPiece(graph, square1, square1 + dim);
+                    placeWallPiece(graph, square2, square2 + dim);
+                    return 1;
+            }
+        }
+    //Vertical Wall (placement can only be LEFT or RIGHT of the 2 squares)
+    } else if (difference == dim || difference == -dim) {
+        if (placement == WALL_LEFT) {
+            if (isValidWall(square1, square1 - 1) &&
+                isValidWall(square2, square2 - 1)) {
+                    placeWallPiece(graph, square1, square1 - 1);
+                    placeWallPiece(graph, square2, square2 - 1);
+                    return 1;
+            }
+        } else if (placement == WALL_RIGHT) {
+            if (isValidWall(square1, square1 + 1) &&
+                isValidWall(square2, square2 + 1)) {
+                    placeWallPiece(graph, square1, square1 + 1);
+                    placeWallPiece(graph, square2, square2 + 1);
+                    return 1;
+            }
+        }
+    }
+    return 0;
+}
+
+//Actually places the wall by removing edges from the graph
+void placeWallPiece(struct Graph* graph, int square1, int square2) {
+    struct AdjListNode* previous;
+    struct AdjListNode* current;
+    current = graph->array[square1].head;
+    //If the node has no edges, return
+    if (!current) {
+        return;
+    }
+    //If node only has one edge and that edge is to be removed
+    if (current->dest == square2) {
+        struct AdjListNode* temp = current;
+        graph->array[square1].head = current->next;
+        free(temp);
+        placeWallPiece(graph, square2, square1);
+        return;
+    } else {
+        previous = current;
+        current = current->next;
+        while (current && previous) {
+            if (current->dest == square2) {
+                struct AdjListNode* temp = current;
+                previous->next = current->next;
+                free(temp);
+                placeWallPiece(graph, square2, square1);
+                return;
+            }
+            previous = current;
+            current = current->next;
+        }
+    }
+}
