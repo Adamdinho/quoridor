@@ -36,6 +36,7 @@
 extern struct Graph* graph;
 
 int init(int p_1or2,int* eval_weights);
-void start_turn(char* last_turn);
+void start_turn(int player, char* last_turn);
+int is_game_complete();
 
 #endif

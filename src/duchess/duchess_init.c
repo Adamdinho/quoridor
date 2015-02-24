@@ -17,6 +17,10 @@ struct Player* minPlayer;
 struct Graph* graph;
 struct Player* maxPlayer;
 
+int is_game_complete() {
+  return 0;
+}
+
 struct Graph* createBoard(struct Graph* graph) {
 
     graph->array = (struct AdjList*) malloc((NUM_NODES + 2) * sizeof(struct AdjList));
@@ -112,7 +116,7 @@ int init(int p_1or2,int* eval_weights) {
   gameTree = createGameTree(graph, DEPTH, MAX_PLAYER);
   //endTree = timer();
 
-  return 0;
+  return p_1or2;
 }
 
 /*(((((((((((((((((((((((((((((())))))))))))))))))))))))))))))
@@ -121,7 +125,7 @@ int init(int p_1or2,int* eval_weights) {
 * \param last_turn - a string of characters which encodes the last turn made by the opponent.
 * \brief begins the process of evaluating moves and executing a turn.
 **(((((((((((((((((((((((((((((())))))))))))))))))))))))))))))*/
-void start_turn(char* last_turn) {
+void start_turn(int player, char* last_turn) {
   double begTree, endTree, endMiniMax;
 
 
