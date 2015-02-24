@@ -126,7 +126,7 @@ int init(int p_1or2,int* eval_weights) {
 * \brief begins the process of evaluating moves and executing a turn.
 **(((((((((((((((((((((((((((((())))))))))))))))))))))))))))))*/
 void start_turn(int player, char* last_turn) {
-  double begTree, endTree, endMiniMax;
+  
 
 
   //TODO Update Tree(s)

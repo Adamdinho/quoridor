@@ -5,6 +5,8 @@ struct AdjListNode* newAdjListNode(int dest) {
     struct AdjListNode* newNode = (struct AdjListNode*) malloc(sizeof(struct AdjListNode));
     newNode->dest = dest;
     newNode->next = NULL;
+
+    return newNode;
 };
 
 

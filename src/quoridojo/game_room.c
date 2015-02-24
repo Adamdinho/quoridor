@@ -25,23 +25,24 @@ void record_winner() {
 
 }
 
-struct game_result determine_results() {
+struct game_result* determine_results() {
   struct game_result* result;
   result = (struct game_result*) malloc(sizeof(struct game_result));
 
 
-  return *result;
+  return result;
 }
 
 int begin_game(int id1, int id2) {
     turn_token = 0;
-    struct game_result result_of_game;
+    char turn_tokens;
+    struct game_result* result_of_game;
     while (is_game_complete() == 0) {
 
       if (turn_token % 2 == 0) {
-        start_turn(1,&turn_token);
+        start_turn(1,&turn_tokens);
       } else {
-        start_turn(2,&turn_token);
+        start_turn(2,&turn_tokens);
       }
 
       turn_token++;
@@ -53,7 +54,7 @@ int begin_game(int id1, int id2) {
     printf(" Winner amd such \n");
     printf(" Number of turns in this game: %d \n", turn_token);
 
-    free(&result_of_game);
+    free(result_of_game);
 
     return 0;
 }

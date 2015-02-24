@@ -39,6 +39,8 @@ struct TreeNode* newTreeNode(struct Graph* state) {
     newNode->state->opponent->label = state->opponent->label;
     newNode->child = NULL;
     newNode->sibling = NULL;
+
+    return newNode;
 };
 
 
@@ -57,7 +59,7 @@ struct TreeNode* createGameTree(struct Graph* currentState, int depth, int turn)
     int fwd = 0;
     int bwd = 0;
     int firstChild = 1;
-    int j, nextTurn;
+    int nextTurn;
     if (turn == 1) {
         playerTurn = currentState->player;
         nextTurn = 0;
