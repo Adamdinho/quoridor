@@ -3,6 +3,10 @@
 
 struct AdjListNode* newAdjListNode(int dest) {
     struct AdjListNode* newNode = (struct AdjListNode*) malloc(sizeof(struct AdjListNode));
+    if (newNode == NULL) {
+        printf("\nMalloc failed for AdjListNode Line 60\n");
+        exit(0);
+    }
     newNode->dest = dest;
     newNode->next = NULL;
 

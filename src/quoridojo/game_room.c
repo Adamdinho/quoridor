@@ -35,14 +35,15 @@ struct game_result* determine_results() {
 
 int begin_game(int id1, int id2) {
     turn_token = 0;
-    char turn_tokens;
+    char eval_tokens;
+    char* last_turn;
     struct game_result* result_of_game;
     while (is_game_complete() == 0) {
 
       if (turn_token % 2 == 0) {
-        start_turn(1,&turn_tokens);
+        last_turn = start_turn(1,&eval_tokens,last_turn);
       } else {
-        start_turn(2,&turn_tokens);
+        last_turn = start_turn(2,&eval_tokens,last_turn);
       }
 
       turn_token++;

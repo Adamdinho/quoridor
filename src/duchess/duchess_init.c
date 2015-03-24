@@ -11,19 +11,31 @@
 #include "duchess_init.h"
 #include "game_tree.h"
 
-extern int player;
-struct TreeNode* gameTree;
-struct Player* minPlayer;
-struct Graph* graph;
 struct Player* maxPlayer;
+struct Player* minPlayer;
+struct TreeNode* nextState;
+
+int dim = 9;
+
+struct TreeNode* treeForMiniMax;
+struct Graph* graph;
 
 int is_game_complete() {
   return 0;
 }
 
-struct Graph* createBoard(struct Graph* graph) {
+struct Graph* createBoard() {
+    struct Graph* graph = (struct Graph*) malloc(sizeof(struct Graph));
+    if (graph == NULL) {
+        printf("\nMalloc failed Create Board Line 28\n");
+        exit(0);
+    }
 
     graph->array = (struct AdjList*) malloc((NUM_NODES + 2) * sizeof(struct AdjList));
+    if (graph->array == NULL) {
+        printf("\nMalloc failed Create Board Line 34\n");
+        exit(0);
+    }
 
     int i, j;
     for (i = 0; i < NUM_NODES + 2; ++i) {
@@ -95,28 +107,34 @@ int init(int p_1or2,int* eval_weights) {
   //player = p_1or2;
 
 
-  minPlayer = (struct Player*) malloc(P_SIZE);
-  graph = (struct Graph*) malloc(G_SIZE);
-  maxPlayer = (struct Player*) malloc(P_SIZE);
+    //double begTree, endTree, endMiniMax;
+    graph = createBoard();
 
-  graph = createBoard(graph);
+    maxPlayer = (struct Player*) malloc(sizeof(struct Player));
+    if (maxPlayer == NULL) {
+        printf("\nMalloc failed Line 576\n");
+        exit(0);
+    }
+    maxPlayer->num_walls = 10;
+    maxPlayer->position = (int)sqrt(NUM_NODES)/2 + 1;
+    maxPlayer->label = MAX_PLAYER;
 
-  maxPlayer->num_walls = 10;
-  maxPlayer->position = (int)sqrt(NUM_NODES)/2 + 1;
-  maxPlayer->label = MAX_PLAYER;
+    minPlayer = (struct Player*) malloc(sizeof(struct Player));
+    if (minPlayer == NULL) {
+        printf("\nMalloc failed Line 585\n");
+        exit(0);
+    }
+    minPlayer->num_walls = 10;
+    minPlayer->position = (NUM_NODES) - (int)sqrt(NUM_NODES)/2;
+    minPlayer->label = MIN_PLAYER;
 
-  minPlayer->num_walls = 10;
-  minPlayer->position = (NUM_NODES) - (int)sqrt(NUM_NODES)/2;
-  minPlayer->label = MIN_PLAYER;
+    int wall[3] = {-1, -1, -1};
+    //begTree = timer();
+    struct TreeNode* gameTree = createGameTree(wall, DEPTH, MAX_PLAYER, maxPlayer->position, minPlayer->position);
+    treeForMiniMax = gameTree;
+    //endTree = timer();
 
-  graph->player = maxPlayer;
-  graph->opponent = minPlayer;
-
-  //begTree = timer();
-  gameTree = createGameTree(graph, DEPTH, MAX_PLAYER);
-  //endTree = timer();
-
-  return p_1or2;
+    return p_1or2;
 }
 
 /*(((((((((((((((((((((((((((((())))))))))))))))))))))))))))))
@@ -125,22 +143,24 @@ int init(int p_1or2,int* eval_weights) {
 * \param last_turn - a string of characters which encodes the last turn made by the opponent.
 * \brief begins the process of evaluating moves and executing a turn.
 **(((((((((((((((((((((((((((((())))))))))))))))))))))))))))))*/
-void start_turn(int player, char* last_turn) {
-  
+char* start_turn(int player, char* eval_functions, char* last_turn) {
 
 
+  char* turn = 0;
   //TODO Update Tree(s)
 
-  int bestMove = minimax(gameTree, DEPTH, MAX_PLAYER);
-  //endMiniMax = timer();
+  int bestMove = minimax(treeForMiniMax, DEPTH, MAX_PLAYER);
+
 
   printf("\n\nBEST MOVE EVAL: %d\n\n", bestMove);
+
 
   //printTree(gameTree);
 
   //printf("\nBuilding Tree -- Execution time : %.10e\n\n\n", endTree - begTree);
   //printf("\nMiniMax -- Execution time : %.10e\n\n\n", endMiniMax - endTree);
   //printf("\nTotal -- Execution time : %.10e\n\n\n", endMiniMax - begTree);
-  //printGraph(graph);
+
+  return turn;
 
 }

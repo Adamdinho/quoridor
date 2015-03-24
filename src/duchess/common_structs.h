@@ -10,23 +10,14 @@ struct Player {
     int label;
 };
 
-
 struct TreeNode {
-    struct Graph* state;
+    int wall[3];
+    int maxPos;
+    int minPos;
+    int turn;
     struct TreeNode* child;
     struct TreeNode* sibling;
 };
-
-/*
-struct TreeNode {
-    struct Graph* state;
-    struct QuoriQueue *children;
-    int evaluation;
-    int moveType; // 0 is root, 1 is pawn move, 2 is wall placement TODO enum this later
-    int moveValue; // Destination if pawn move. will implement wall placements later.
-    int level;
-    //struct TreeNode* sibling;
-};*/
 
 struct AdjListNode {
     int dest;
@@ -39,9 +30,18 @@ struct AdjList {
 
 struct Graph {
     struct AdjList* array;
-    struct Player* player;
-    struct Player* opponent;
 };
+
+/*
+struct TreeNode {
+    struct Graph* state;
+    struct QuoriQueue *children;
+    int evaluation;
+    int moveType; // 0 is root, 1 is pawn move, 2 is wall placement TODO enum this later
+    int moveValue; // Destination if pawn move. will implement wall placements later.
+    int level;
+    //struct TreeNode* sibling;
+};*/
 
 struct BFTreeNode {
     struct TreeNode* nodeWrapped;

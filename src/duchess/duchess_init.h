@@ -30,13 +30,15 @@
 #define G_SIZE sizeof(struct Graph)
 
 
-//extern struct Player* maxPlayer;
-//extern struct Player* minPlayer;
-//
+extern int player;
+extern int dim;
 extern struct Graph* graph;
+extern struct Player* maxPlayer;
+extern struct Player* minPlayer;
+extern struct TreeNode* nextState;
 
 int init(int p_1or2,int* eval_weights);
-void start_turn(int player, char* last_turn);
+char* start_turn(int player, char* eval_functions, char* last_turn);
 int is_game_complete();
 
 #endif
